@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+void bfs(int s,vector<int>adj[],vector<int>vis)
+{
+    queue<int>q;
+    vis[s]=1;
+    q.push(s);
+    cout<<s<<" ";
+    while(!q.empty())
+    {
+        int t=q.front();
+        q.pop();
+        vis[t]=1;
+        for(auto it:adj[t]){
+            if(!vis[it]){
+                q.push(it);
+                vis[it]=1;
+                cout<<it<<" ";
+            }
+        }
+    }
+}
+int main() {
+	// your code goes here
+	int n,m,u,v;
+	cin>>n>>m;
+	vector<int>adj[n+1];
+	vector<int>vis(n+1);
+	for(int i=0;i<n;i++)
+	{
+	    cin>>u>>v;
+	    adj[u].push_back(v);
+	    adj[v].push_back(u);
+	}
+	bfs(1,adj,vis);
+}
