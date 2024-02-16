@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+void DFS(int node,vector<int>list[],vector<int>&vis){
+	vis[node]=1;
+	cout<<node<<" ";
+	for(auto it:list[node]){
+		if(!vis[it]){
+			DFS(it,list,vis);
+		}
+	}
+}
+int main() {
+	int n,e;
+	cin>>n>>e;
+	// 2 ways of reading an input for graph and to storing
+	// 1. 2d - Array [Matrix]
+	/*int matrix[n+1][n+1];
+	int u,v;
+	for(int i=0;i<e;i++){
+		cin>>u>>v;
+		matrix[u][v]=1;
+		matrix[v][u]=1;
+	}*/
+	vector<int>list[n+1];
+	int u,v;
+	for(int i=0;i<e;i++){
+		cin>>u>>v;
+		/* for undirected
+			list[u].push_back(v);
+			list[v].push_back(u);
+		   for directed
+		    list[u].push_back(v);
+		*/
+		list[u].push_back(v);
+		list[v].push_back(u);
+	}
+	vector<int>vis(n+1,0);
+	DFS(1,list,vis);
+
+}
