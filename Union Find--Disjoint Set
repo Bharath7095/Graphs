@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+int FindParent(int a,vector<int>&Parent){
+    if(Parent[a]==a) return a;
+    return Parent[a]=FindParent(Parent[a],Parent);
+}
+void Union(int a,int b,vector<int>&Parent,vector<int>&Rank){
+    int pa=FindParent(a,Parent);
+    int pb=FindParent(b,Parent);
+    if(Rank[pa]==Rank[pb]){
+        Parent[pa]=pb;
+        Rank[pa]++;
+    }
+    else if(Rank[pa]<Rank[pb]){
+        Parent[pa]=pb;
+    }
+    else{
+        Parent[pb]=pa;
+    }
+}
+int main() {
+	// your code goes here
+	int n;
+	cin>>n;
+	vector<int>Parent(n+1);
+	vector<int>Rank(n+1,0);
+	for(int i=1;i<=n;i++){
+	    Parent[i]=i;
+	}
+	int Q;
+	cin>>Q;
+    while(Q--){
+    	int action,a,b;
+    	cin>>action>>a>>b;
+    	if(action==1){
+    	    Union(a,b,Parent,Rank);
+    	}
+    	else{
+          //Checking whether it is in same parent or not...
+        	if(FindParent(a,Parent)==FindParent(b,Parent)){
+        	    cout<<"SAME";
+        	}
+        	else{
+        	    cout<<"NOT SAME";
+        	}
+    	}
+	}
+}
