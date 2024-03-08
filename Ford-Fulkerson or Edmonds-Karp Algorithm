@@ -1,0 +1,73 @@
+//For Maximum Flow Problem
+//Ford-Fulkerson----Using DFS
+//Edmonds-Karp------Using BFS
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+bool BFS(vector<vector<ll>>&RcGraph,int source,int sink,vector<ll>&Parent,int n){
+    
+    
+    vector<bool>vis(n,false);
+    queue<ll>q;
+    q.push(source);
+    vis[source]=true;
+    while(!q.empty())
+    {
+        int u=q.front();
+        q.pop();
+        for(int v=0;v<n;v++){
+            if(RcGraph[u][v]>0 and !vis[v]){
+                vis[v]=true;
+                q.push(v);
+                Parent[v]=u;
+                if(v==sink){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+ll Find_Max_Flow(vector<vector<ll>>&Graph, int source,int sink,int n){
+    vector<vector<ll>>RcGraph(Graph);
+    vector<ll>Parent(1001,0);
+    ll Max_Flow=0;
+    int min_edge=INT_MAX;
+    while(BFS(RcGraph,source,sink,Parent,n))
+    {
+        int v=sink;
+        while(v!=source){
+            int u=Parent[v];
+            if(min_edge > RcGraph[u][v]){
+                min_edge = RcGraph[u][v];
+            }
+            v=u;
+        }
+        Max_Flow+=min_edge;
+        v=sink;
+        while(v!=source){
+            int u=Parent[v];
+            RcGraph[u][v]-=min_edge;
+            v=u;
+        }
+    }
+    
+    return Max_Flow;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<vector<ll>>Graph(n,vector<ll>(n,0));
+    for(int i=0;i<m;i++){
+        int u,v,c;
+        cin>>u>>v>>c;
+        Graph[u][v]=c;
+    }
+    int source=0,sink=1;
+    ll max_flow=Find_Max_Flow(Graph,source,sink,n);
+    cout<<max_flow;
+}
